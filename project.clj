@@ -7,5 +7,7 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [prismatic/plumbing "0.3.7"]
                  [potemkin "0.3.11"]
-                 [com.taoensso/encore "1.20.1"]])
+                 [com.taoensso/encore "1.20.1"]]
+  :codox  {:src-dir-uri "http://github.com/curiosityapp/curiosity.utils/blob/master/"
+           :src-linenum-anchor-prefix "L"})
 
