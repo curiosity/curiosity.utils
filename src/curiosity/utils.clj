@@ -107,3 +107,9 @@
    lookups"
   [m ks]
   (map (partial get' m) ks))
+
+(defn ignore-args
+  "Returns an f that ignores the first n arguments."
+  [n f]
+  (fn [& xs]
+    (apply f (drop n xs))))
