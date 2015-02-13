@@ -48,8 +48,8 @@
          ::success [true ::success])))
 
 (deftest ignore-args
-  (are [n r] (= r ((utils/ignore-args n vector) (range 3)))
-       0 [0 1 2 3 4]
-       1 [1 2 3 4]
-       2 [2 3 4]
-       3 [3 4]))
+  (are [n r] (= r (apply (utils/ignore-args n vector) (range 3)))
+       0 [0 1 2]
+       1 [1 2]
+       2 [2]
+       3 []))
