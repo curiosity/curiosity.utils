@@ -8,11 +8,21 @@ com.taeonsso/encore, and potemkin.
 
 Run `lein doc` for html api docs. See docstrings or `clojure.repl/doc` otherwise.
 
+## Installation
+
+See https://clojars.org/curiosity.utils for install instructions and latest artifacts.
+
 ## Usage
 
 ```clj
 (require '[curiosity.utils :refer :all])
 ```
+
+## Testing
+
+Tests live under `test/` and are run via CircleCI. 
+
+[![Latest Version](https://circleci.com/gh/CuriosityApp/curiosity.utils.svg?style=shield&circle-token=6a84b5949665cc4ca73e868c41339be82e8e066b)](https://circleci.com/gh/CuriosityApp/curiosity.utils)
 
 ## License
 
