@@ -10,7 +10,7 @@ Run `lein doc` for html api docs. See docstrings or `clojure.repl/doc` otherwise
 
 ## Installation
 
-See https://clojars.org/curiosity.utils for install instructions and latest artifacts.
+[![Clojars Project](http://clojars.org/curiosity.utils/latest-version.svg)](http://clojars.org/curiosity.utils)
 
 ## Usage
 
