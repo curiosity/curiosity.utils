@@ -8,6 +8,8 @@ com.taeonsso/encore, and potemkin.
 
 Run `lein doc` for html api docs. See docstrings or `clojure.repl/doc` otherwise.
 
+Semi-recent output from `lein doc` resides here: https://curiosityapp.github.io/curiosity.utils
+
 ## Installation
 
 [![Clojars Project](http://clojars.org/curiosity.utils/latest-version.svg)](http://clojars.org/curiosity.utils)
