@@ -113,3 +113,33 @@
   [n f]
   (fn [& xs]
     (apply f (drop n xs))))
+
+(defmacro sim-starity
+  "Takes a function which is not star arity, and simulates star arity through
+   repeated invocations of f"
+  [f]
+  `(fn [x# & ys#]
+     (loop [r# x# args# ys#]
+       (if (seq args#)
+         (recur (apply ~f r# (first args#))
+                (rest args#))
+         r#))))
+
+(defn slice
+  "Given a keyspec, return a map with just that keyspec"
+  [m k]
+  (assoc' nil k (get' m k)))
+
+(defn filter-slices
+  "Return just the slices of the map you want"
+  [m & keyspecs]
+  (apply merge nil (map (partial slice m) keyspecs)))
+
+(defn slice-n-rename
+  "Given a map and a vector of [from-ks to-ksk] keyspecs, slice
+   from the from-keyspecs, renaming them to to-keyspecs and return
+   the resulting map"
+  [m & keyspecs]
+  (apply (sim-starity move-key)
+         (apply filter-slices m (map first keyspecs))
+         keyspecs))
