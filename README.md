@@ -1,5 +1,7 @@
 # curiosity.utils
 
+[![Join the chat at https://gitter.im/CuriosityApp/curiosity.utils](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/CuriosityApp/curiosity.utils?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This is for generic utility functions in use across Curiosity's clojure 
 projects. It remixes its own functions along with those from prismatic/plumbing,
 com.taeonsso/encore, and potemkin.
