@@ -24,7 +24,7 @@ Semi-recent output from `lein doc` resides here: https://curiosityapp.github.io/
 
 Tests live under `test/` and are run via CircleCI. 
 
-[![Latest Version](https://circleci.com/gh/curiosity/curiosity.utils.svg?style=svg&circle-token=6a84b5949665cc4ca73e868c41339be82e8e066b)](https://circleci.com/gh/curiosity/curiosity.utils)
+[![Latest Version](https://circleci.com/gh/curiosity/curiosity.utils.svg?style=shield&circle-token=6a84b5949665cc4ca73e868c41339be82e8e066b)](https://circleci.com/gh/curiosity/curiosity.utils)
 
 ## License
 
