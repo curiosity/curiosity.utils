@@ -1,6 +1,6 @@
 (ns curiosity.utils
   (:require [clojure.pprint :refer [pprint]]
-            [clojure.string :as string] 
+            [clojure.string :as string]
             [plumbing.core :as plumbing]
             [taoensso.encore :as encore]
             potemkin))
@@ -24,13 +24,13 @@
   (fn [doc]
     (merge doc (f doc))))
 
-(defn pprint-str 
+(defn pprint-str
   "Pretty Prints x, returning it as a string"
   [x]
-  (with-out-str 
+  (with-out-str
     (pprint x)))
 
-(def any? 
+(def any?
   "True if anything in the collection is logical true"
   (partial some identity))
 
@@ -48,7 +48,7 @@
 
 (defmacro if-do
   "Evaluate value and pass it to truthy/falsey"
-  ([value truthy] 
+  ([value truthy]
    (when-do value truthy))
   ([value truthy falsey]
    `(if ~value
@@ -57,7 +57,7 @@
 
 (def path-split
   "Split on / or nil"
-  #(when (string? %) 
+  #(when (string? %)
      (string/split % #"\/")))
 
 (def csv-split
@@ -93,9 +93,9 @@
   [m keyish f]
   ((if (vector? keyish)
     update-in
-    plumbing/update) m keyish f))
+    update) m keyish f))
 
-(defn move-key 
+(defn move-key
   "Renames the k1 to k2 in map m, optionally applying t to the value of k1 first"
   ([m k1 k2]
    (move-key m k1 k2 identity))
