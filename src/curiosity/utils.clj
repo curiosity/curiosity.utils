@@ -74,6 +74,21 @@
   [a-binding & body]
   `(if-seq-let ~a-binding (do ~@body)))
 
+;; defining forms
+;;
+;; We like the look of the arglists like they are the args to a defn better than explicit metadata
+(defmacro defcomp
+  "Define function composition at var vname, providing appropriate docstrings and arglists"
+  [vname docstring arglists & fns]
+  (let [args (if (vector? arglists)
+               (list arglists)
+               arglists)
+        sym (with-meta vname (assoc (meta vname) :arglists `(do '~args)))
+        _ (prn (type sym))]
+    `(def ~sym
+       ~docstring
+       (comp ~@fns))))
+
 ;; misc utility
 ;;
 (def path-split
