@@ -1,4 +1,4 @@
-(ns curiosity.test_utils
+(ns curiosity.test-utils
   (:require [clojure.test :refer :all]
             [curiosity.utils :as utils]))
 
@@ -46,6 +46,21 @@
          false [false false]
          true [true true]
          ::success [true ::success])))
+
+(deftest if-seq-let
+  (are [v t] (= [t v]
+                (utils/if-seq-let [x v]
+                          [true x]
+                          [false x]))
+       []          false
+       {}          false
+       '()         false
+       nil         false
+       (lazy-seq)  false
+       [1]         true
+       {:k :v}     true
+       '(1)        true
+       (seque [1]) true))
 
 (deftest ignore-args
   (are [n r] (= r (apply (utils/ignore-args n vector) (range 3)))
