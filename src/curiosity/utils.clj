@@ -55,6 +55,27 @@
       (~truthy ~value)
       (~falsey ~value))))
 
+(defmacro if-seq-let
+  "if expr in binding is a seq, run then else else (default nil)
+   Note: sym is bound to the result of expr even in the else scope (not necessarily nil/false)"
+  {:arglists '([[sym expr] then else]
+               [[sym expr] then])}
+  [[sym expr] & body]
+  (let [then (first body)
+        else (second body)]
+    `(let [~sym ~expr]
+           (if (seq ~sym)
+             ~then
+             ~else))))
+
+(defmacro when-seq-let
+  "when expr is a seq, run the body in an implicit do, else nil"
+  {:arglists '([[sym expr] & body])}
+  [a-binding & body]
+  `(if-seq-let ~a-binding (do ~@body)))
+
+;; misc utility
+;;
 (def path-split
   "Split on / or nil"
   #(when (string? %)
