@@ -55,6 +55,23 @@
       (~truthy ~value)
       (~falsey ~value))))
 
+(defmacro guard
+  "Guards the first argument of the first form of body by evaluating the argument and then testing
+  with when. If the argument evaluates falsey, return nil, otherwise, fully evaluate body. The tested
+  argument will only be evaluated once.
+
+  This is like when-do, but much cleaner for interop calls"
+  [& body]
+  (let [x (gensym)
+        first-form (first body)
+        replaced (second first-form)
+        remaining-form (nnext first-form)
+        new-form (cons (first first-form) (cons x remaining-form))
+        new-body (cons new-form (next body))]
+    `(let [~x ~replaced]
+       (when ~x
+         ~@new-body))))
+
 (defmacro if-seq-let
   "if expr in binding is a seq, run then else else (default nil)
    Note: sym is bound to the result of expr even in the else scope (not necessarily nil/false)"
@@ -73,6 +90,28 @@
   {:arglists '([[sym expr] & body])}
   [a-binding & body]
   `(if-seq-let ~a-binding (do ~@body)))
+
+;; from https://github.com/flatland/useful/blob/138cfa0a5a392533b8de9a950faae44408362297/src/flatland/useful/experimental.clj#L31
+;; Copyright 2013 Alan Malloy, licensed under the Eclipse Public License 1.0 (same as curiosity.utils)
+(defmacro cond-let
+  "An implementation of cond-let that is as similar as possible to if-let. Takes multiple
+  test-binding/then-form pairs and evalutes the form if the binding is true. Also supports
+  :else in the place of test-binding and always evaluates the form in that case.
+ 
+  Example:
+   (cond-let [b (bar 1 2 3)] (println :bar b)
+             [f (foo 3 4 5)] (println :foo f)
+             [b (baz 6 7 8)] (println :baz b)
+             :else           (println :no-luck))
+
+  from https://github.com/flatland/useful/blob/138cfa0a5a392533b8de9a950faae44408362297/src/flatland/useful/experimental.clj#L31
+  "
+  [test-binding then-form & more]
+  (let [test-binding (if (= :else test-binding) `[t# true] test-binding)
+        else-form    (when (seq more) `(cond-let ~@more))]
+    `(if-let ~test-binding
+       ~then-form
+       ~else-form)))
 
 ;; defining forms
 ;;
@@ -179,3 +218,4 @@
   (apply (sim-starity move-key)
          (apply filter-slices m (map first keyspecs))
          keyspecs))
+
