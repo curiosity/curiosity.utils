@@ -1,4 +1,4 @@
-(defproject curiosity.utils "0.7.0"
+(defproject curiosity.utils "0.8.0"
   :description "Misc clojure functions"
   :url "https://github.com/CuriosityApp/curiosity.utils"
   :license {:name "Eclipse Public License"
