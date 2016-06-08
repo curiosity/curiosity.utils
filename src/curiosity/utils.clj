@@ -219,3 +219,7 @@
          (apply filter-slices m (map first keyspecs))
          keyspecs))
 
+(defn flatten1
+  "Flatten 1 level. Items in coll that aren't sequential are wrapped in a vec"
+  [coll]
+  (mapcat #(if (sequential? %) % [%]) coll))
