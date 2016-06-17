@@ -30,9 +30,68 @@
   (with-out-str
     (pprint x)))
 
-(def any?
-  "True if anything in the collection is logical true"
-  (partial some identity))
+(defn any?
+  "Returns the first logical true value or nil.
+  This is essentially clojure.core/or but apply-able"
+  ([] nil)
+  ([x] x)
+  ([x y] (or x y))
+  ([x y & more] (or x y (first (filter boolean more)))))
+
+(defn java-map?
+  "Returns true if coll implements java.util.Map"
+  {:static true}
+  [coll]
+  (instance? java.util.Map coll))
+
+(defn seq-deep-merge-fn
+  [final-decider x y]
+  (when (or x y)
+    (let [?same (= (type x) (type y))
+          cx (coll? x)
+          cy (coll? y)
+          ?colls (and cx (= cx cy))]
+      (cond
+        (and ?same (java-map? x)) (merge-with (partial seq-deep-merge-fn final-decider) x y)
+        (and ?same (set? x)) (into (set x) (set y))
+        (and ?same (sequential? x)) (vec (into (set x) (set y)))
+        ?colls (into x y)
+        cx (into x [y])
+        cy (into y [x])
+        :else (final-decider x y)))))
+
+(def deep-merge
+  "Recursively merge maps, treating non-map child sequences as unordered deduped collections represented as a vector (if all inputs were not sets) or a set (if all inputs were sets). When types of inputs don't match, but one of the inputs is a collection, write the non-collection into the collection using into. When all else fails, take the right-most value."
+  (partial merge-with (partial seq-deep-merge-fn (fn [x y] y))))
+
+
+(def ^:dynamic
+  *bool-or-nil-logger*
+  "Fn that takes an exception and presumably logs it"
+  prn)
+
+(defn bool-or-nil-fn
+  "True if f returns boolean true.
+   False if f returns boolean false.
+   nil if f throws.
+   f is a thunk
+  Logs exceptions via *bool-or-nil-logger* (default: prn)"
+  ([f]
+   (try
+     (boolean (f))
+     (catch Exception e
+       (*bool-or-nil-logger* e)
+       nil))))
+
+(defmacro bool-or-nil
+  "True if body evaluates to boolean true.
+  False if body evaluates to boolean true.
+  nil if body throws.
+  body is run in an implicit do
+  Logs exceptions via *bool-or-nil-logger* (default: prn)"
+  [& body]
+  `(let [f# (fn [] (do ~@body))]
+     (bool-or-nil-fn f#)))
 
 (def deref-at-str
   "Returns the deref'd value of the var named by str"
