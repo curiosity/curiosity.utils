@@ -3,7 +3,8 @@
             [clojure.string :as string]
             [plumbing.core :as plumbing]
             [taoensso.encore :as encore]
-            potemkin))
+            potemkin
+            [clojure.string :as str]))
 
 (encore/defalias defalias encore/defalias)
 (defalias have? encore/have?)
@@ -282,3 +283,36 @@
   "Flatten 1 level. Items in coll that aren't sequential are wrapped in a vec"
   [coll]
   (mapcat #(if (sequential? %) % [%]) coll))
+
+
+(defn snake-case
+  "Foo-bar -> foo_bar"
+  [s]
+  (guard (str/replace s "-" "_"))
+  (-> s str/lower-case (str/replace "-" "_")))
+
+(defn kebob-case
+  "Foo_Bar -> foo-bar"
+  [s]
+  (-> s str/lower-case (str/replace "_" "-")))
+
+(defn index-exclude [r ex]
+  "Take all indices execpted ex"
+  (filter #(not (ex %)) (range r)))
+
+
+(defn dissoc-idx [v & idxs]
+  "Remove idxs from v"
+  (map v (index-exclude (count v) (into #{} idxs))))
+
+(defmacro forv
+  "Like `clojure.core/for`, but forces immediately into a vector"
+  [bindings & body]
+  `(->> (for ~bindings (do ~@body))
+        (into [])))
+
+(defn positions
+  "Returns a sequence of indexes for items in a seq that match pred.
+   If you pass a set, it works like (.indexOf v) on vectors, but returns all matches"
+  [pred coll]
+  (keep-indexed #(when (pred %2) %1) coll))
