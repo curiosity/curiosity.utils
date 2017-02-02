@@ -1,6 +1,5 @@
 (ns curiosity.utils
   (:require [clojure.pprint :refer [pprint]]
-            [clojure.string :as string]
             [plumbing.core :as plumbing]
             [taoensso.encore :as encore]
             potemkin
@@ -193,12 +192,12 @@
 (def path-split
   "Split on / or nil"
   #(when (string? %)
-     (string/split % #"\/")))
+     (str/split % #"\/")))
 
 (def csv-split
   "Split on commas or nil. For more complicated use cases, see clojure.data.csv"
   #(when (string? %)
-     (string/split % #",")))
+     (str/split % #",")))
 
 (defn assoc'
   "calls assoc or assoc-in depending on whether a vector of keys was supplied."
