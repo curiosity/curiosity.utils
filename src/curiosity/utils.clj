@@ -315,3 +315,7 @@
    If you pass a set, it works like (.indexOf v) on vectors, but returns all matches"
   [pred coll]
   (keep-indexed #(when (pred %2) %1) coll))
+
+(def ffilter 
+  "(first (filter ...))"
+  (comp first filter))
