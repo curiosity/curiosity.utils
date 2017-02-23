@@ -316,6 +316,20 @@
   [pred coll]
   (keep-indexed #(when (pred %2) %1) coll))
 
-(def ffilter 
+(def ffilter
   "(first (filter ...))"
   (comp first filter))
+
+(defn update-in-if
+  "Updates obj[path] with f if pred(obj[path])"
+  [pred obj path f & args]
+  (let [x (get-in obj path)]
+    (if (pred x)
+      (assoc-in obj path (apply f x args))
+      obj)))
+
+(def update-in-if-some?
+  "Updates obj[path] with f if obj[path]"
+  (partial update-in-if some?))
+
+
